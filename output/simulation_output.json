@@ -1,0 +1,993 @@
+{
+  "generated_at": "2026-08-29T12:40:17",
+  "patient_count": 20,
+  "baseline_results": [
+    {
+      "patient": {
+        "patient_id": "P001",
+        "age": 58,
+        "chief_complaint": "chest pain and sweating",
+        "vitals": {
+          "hr": 112,
+          "rr": 24,
+          "sbp": 96,
+          "spo2": 93,
+          "temp_c": 37.1
+        },
+        "has_ehr_history": true,
+        "note": "Red-flag case: chest pain + diaphoresis, age 40+"
+      },
+      "result": {
+        "patient_id": "P001",
+        "esi": 1,
+        "confidence": 0.95,
+        "reasons": [
+          "RED FLAG: Chest pain with diaphoresis in a patient 40+"
+        ],
+        "autonomous_escalation": true,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P002",
+        "age": 4,
+        "chief_complaint": "high fever and fussiness",
+        "vitals": {
+          "hr": 150,
+          "rr": 32,
+          "sbp": null,
+          "spo2": 97,
+          "temp_c": 39.4
+        },
+        "has_ehr_history": true,
+        "note": "Pediatric case: fever interpreted against pediatric norms"
+      },
+      "result": {
+        "patient_id": "P002",
+        "esi": 3,
+        "confidence": 0.88,
+        "reasons": [
+          "Fever recorded at 39.4C",
+          "Missing at intake: sbp"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": [
+          "sbp"
+        ]
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P003",
+        "age": 82,
+        "chief_complaint": "generalized weakness, hard to describe",
+        "vitals": {
+          "hr": 92,
+          "rr": 20,
+          "sbp": 118,
+          "spo2": 94,
+          "temp_c": 37.9
+        },
+        "has_ehr_history": true,
+        "note": "Geriatric + ambiguous: mild fever is significant for this age band, vague complaint lowers confidence"
+      },
+      "result": {
+        "patient_id": "P003",
+        "esi": 4,
+        "confidence": 0.5,
+        "reasons": [
+          "Fever (37.9C) - clinically significant for a geriatric patient at a lower threshold than adult norms",
+          "Presentation is vague / hard to characterize from the complaint alone",
+          "Confidence is low (0.5) - defaulting to the more cautious, higher-acuity read rather than assuming average risk"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": true,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P004",
+        "age": 29,
+        "chief_complaint": "ankle sprain after basketball",
+        "vitals": {
+          "hr": 78,
+          "rr": 16,
+          "sbp": 122,
+          "spo2": 99,
+          "temp_c": 36.8
+        },
+        "has_ehr_history": false,
+        "note": "Zero-history, first-time patient, low acuity"
+      },
+      "result": {
+        "patient_id": "P004",
+        "esi": 5,
+        "confidence": 0.85,
+        "reasons": [
+          "Vitals and complaint ('ankle sprain after basketball') within expected range for adult patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P005",
+        "age": 45,
+        "chief_complaint": "shortness of breath",
+        "vitals": {
+          "hr": 108,
+          "rr": 26,
+          "sbp": 132,
+          "spo2": 90,
+          "temp_c": 37.0
+        },
+        "has_ehr_history": true,
+        "note": "Low SpO2 should drive higher acuity"
+      },
+      "result": {
+        "patient_id": "P005",
+        "esi": 2,
+        "confidence": 1.0,
+        "reasons": [
+          "Respiratory rate outside adult normal range",
+          "Oxygen saturation below expected range",
+          "A single vital is severely abnormal - acuity floored regardless of the overall average"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P006",
+        "age": 34,
+        "chief_complaint": "laceration on forearm",
+        "vitals": {
+          "hr": 82,
+          "rr": 15,
+          "sbp": 118,
+          "spo2": 99,
+          "temp_c": 36.9
+        },
+        "has_ehr_history": true,
+        "note": "Straightforward low-acuity case"
+      },
+      "result": {
+        "patient_id": "P006",
+        "esi": 5,
+        "confidence": 1.0,
+        "reasons": [
+          "Vitals and complaint ('laceration on forearm') within expected range for adult patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P007",
+        "age": 71,
+        "chief_complaint": "dizziness and fall at home",
+        "vitals": {
+          "hr": 58,
+          "rr": 18,
+          "sbp": 104,
+          "spo2": 95,
+          "temp_c": 36.7
+        },
+        "has_ehr_history": true,
+        "note": "Geriatric fall risk, moderate acuity"
+      },
+      "result": {
+        "patient_id": "P007",
+        "esi": 5,
+        "confidence": 1.0,
+        "reasons": [
+          "Vitals and complaint ('dizziness and fall at home') within expected range for geriatric patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P008",
+        "age": 8,
+        "chief_complaint": "cough and mild fever",
+        "vitals": {
+          "hr": 118,
+          "rr": 28,
+          "sbp": null,
+          "spo2": 98,
+          "temp_c": 38.1
+        },
+        "has_ehr_history": true,
+        "note": "Pediatric, fever below pediatric fever threshold - should not over-escalate"
+      },
+      "result": {
+        "patient_id": "P008",
+        "esi": 5,
+        "confidence": 0.88,
+        "reasons": [
+          "Vitals and complaint ('cough and mild fever') within expected range for pediatric patient",
+          "Missing at intake: sbp"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": [
+          "sbp"
+        ]
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P009",
+        "age": 67,
+        "chief_complaint": "facial droop and slurred speech",
+        "vitals": {
+          "hr": 88,
+          "rr": 18,
+          "sbp": 168,
+          "spo2": 96,
+          "temp_c": 36.9
+        },
+        "has_ehr_history": false,
+        "note": "Red-flag case: stroke pattern, also zero-history"
+      },
+      "result": {
+        "patient_id": "P009",
+        "esi": 1,
+        "confidence": 0.95,
+        "reasons": [
+          "RED FLAG: Stroke-pattern symptoms reported"
+        ],
+        "autonomous_escalation": true,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P010",
+        "age": 39,
+        "chief_complaint": "severe abdominal pain",
+        "vitals": {
+          "hr": 104,
+          "rr": 22,
+          "sbp": 108,
+          "spo2": 97,
+          "temp_c": 38.2
+        },
+        "has_ehr_history": true,
+        "note": "Moderate-high acuity abdominal case"
+      },
+      "result": {
+        "patient_id": "P010",
+        "esi": 4,
+        "confidence": 1.0,
+        "reasons": [
+          "Fever recorded at 38.2C"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P011",
+        "age": 52,
+        "chief_complaint": "just feels off, tired all the time",
+        "vitals": {
+          "hr": 98,
+          "rr": 18,
+          "sbp": 128,
+          "spo2": 96,
+          "temp_c": 37.0
+        },
+        "has_ehr_history": true,
+        "note": "Ambiguous presentation, vitals mostly unremarkable - tests confidence-driven escalation"
+      },
+      "result": {
+        "patient_id": "P011",
+        "esi": 4,
+        "confidence": 0.5,
+        "reasons": [
+          "Presentation is vague / hard to characterize from the complaint alone",
+          "Confidence is low (0.5) - defaulting to the more cautious, higher-acuity read rather than assuming average risk"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": true,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P012",
+        "age": 19,
+        "chief_complaint": "allergic reaction with facial swelling",
+        "vitals": {
+          "hr": 118,
+          "rr": 24,
+          "sbp": 100,
+          "spo2": 95,
+          "temp_c": 36.8
+        },
+        "has_ehr_history": false,
+        "note": "Zero-history, potentially fast-progressing case"
+      },
+      "result": {
+        "patient_id": "P012",
+        "esi": 4,
+        "confidence": 0.85,
+        "reasons": [
+          "Heart rate outside adult normal range",
+          "Respiratory rate outside adult normal range"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P013",
+        "age": 75,
+        "chief_complaint": "fever and confusion",
+        "vitals": {
+          "hr": 124,
+          "rr": 24,
+          "sbp": 88,
+          "spo2": 93,
+          "temp_c": 38.9
+        },
+        "has_ehr_history": true,
+        "note": "Red-flag case: sepsis pattern (fever + tachycardia + hypotension)"
+      },
+      "result": {
+        "patient_id": "P013",
+        "esi": 1,
+        "confidence": 0.95,
+        "reasons": [
+          "RED FLAG: Fever + tachycardia + hypotension: sepsis pattern"
+        ],
+        "autonomous_escalation": true,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P014",
+        "age": 26,
+        "chief_complaint": "mild headache",
+        "vitals": {
+          "hr": 74,
+          "rr": 14,
+          "sbp": 118,
+          "spo2": 99,
+          "temp_c": 36.9
+        },
+        "has_ehr_history": true,
+        "note": "Low acuity, complete data, high confidence"
+      },
+      "result": {
+        "patient_id": "P014",
+        "esi": 5,
+        "confidence": 1.0,
+        "reasons": [
+          "Vitals and complaint ('mild headache') within expected range for adult patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P015",
+        "age": 61,
+        "chief_complaint": "rash on both arms",
+        "vitals": {
+          "hr": 80,
+          "rr": 16,
+          "sbp": 130,
+          "spo2": 98,
+          "temp_c": 37.0
+        },
+        "has_ehr_history": true,
+        "note": "Low acuity dermatologic case"
+      },
+      "result": {
+        "patient_id": "P015",
+        "esi": 5,
+        "confidence": 1.0,
+        "reasons": [
+          "Vitals and complaint ('rash on both arms') within expected range for adult patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P016",
+        "age": 2,
+        "chief_complaint": "vomiting and not feeding well",
+        "vitals": {
+          "hr": 142,
+          "rr": 30,
+          "sbp": null,
+          "spo2": 97,
+          "temp_c": 37.4
+        },
+        "has_ehr_history": false,
+        "note": "Pediatric, zero-history, borderline vitals for age band"
+      },
+      "result": {
+        "patient_id": "P016",
+        "esi": 5,
+        "confidence": 0.73,
+        "reasons": [
+          "Vitals and complaint ('vomiting and not feeding well') within expected range for pediatric patient",
+          "Missing at intake: sbp"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": [
+          "sbp"
+        ]
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P017",
+        "age": 88,
+        "chief_complaint": "not feeling well, family brought her in",
+        "vitals": {
+          "hr": 84,
+          "rr": 20,
+          "sbp": null,
+          "spo2": null,
+          "temp_c": null
+        },
+        "has_ehr_history": true,
+        "note": "Geriatric, ambiguous complaint AND missing most vitals - stress test for confidence + fail-safe logic"
+      },
+      "result": {
+        "patient_id": "P017",
+        "esi": 4,
+        "confidence": 0.14,
+        "reasons": [
+          "Presentation is vague / hard to characterize from the complaint alone",
+          "Confidence is low (0.14) - defaulting to the more cautious, higher-acuity read rather than assuming average risk",
+          "Missing at intake: sbp, spo2, temp_c"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": true,
+        "missing_vitals": [
+          "sbp",
+          "spo2",
+          "temp_c"
+        ]
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P018",
+        "age": 33,
+        "chief_complaint": "cough, three days",
+        "vitals": {
+          "hr": 76,
+          "rr": 16,
+          "sbp": 122,
+          "spo2": 98,
+          "temp_c": 37.3
+        },
+        "has_ehr_history": true,
+        "note": "Low acuity respiratory complaint"
+      },
+      "result": {
+        "patient_id": "P018",
+        "esi": 5,
+        "confidence": 1.0,
+        "reasons": [
+          "Vitals and complaint ('cough, three days') within expected range for adult patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P019",
+        "age": 47,
+        "chief_complaint": "fever and body aches",
+        "vitals": {
+          "hr": 96,
+          "rr": 18,
+          "sbp": 124,
+          "spo2": 97,
+          "temp_c": 38.6
+        },
+        "has_ehr_history": true,
+        "note": "Moderate acuity viral-illness presentation"
+      },
+      "result": {
+        "patient_id": "P019",
+        "esi": 3,
+        "confidence": 1.0,
+        "reasons": [
+          "Fever recorded at 38.6C"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    },
+    {
+      "patient": {
+        "patient_id": "P020",
+        "age": 15,
+        "chief_complaint": "ankle sprain during soccer practice",
+        "vitals": {
+          "hr": 88,
+          "rr": 18,
+          "sbp": 116,
+          "spo2": 99,
+          "temp_c": 36.9
+        },
+        "has_ehr_history": true,
+        "note": "Adolescent scored under adult band per current 2-band cutoff - flagged as a known limitation in README"
+      },
+      "result": {
+        "patient_id": "P020",
+        "esi": 5,
+        "confidence": 1.0,
+        "reasons": [
+          "Vitals and complaint ('ankle sprain during soccer practice') within expected range for adult patient"
+        ],
+        "autonomous_escalation": false,
+        "low_confidence_escalated": false,
+        "missing_vitals": []
+      }
+    }
+  ],
+  "surge_simulation": {
+    "multiplier": 3,
+    "total_patients": 60,
+    "recheck_breaches": 30,
+    "sample": [
+      {
+        "patient_id": "P001-surge1",
+        "esi": 1,
+        "confidence": 0.95,
+        "simulated_wait_minutes": 0,
+        "safe_wait_minutes": 0,
+        "recheck_breached": true
+      },
+      {
+        "patient_id": "P002-surge1",
+        "esi": 3,
+        "confidence": 0.88,
+        "simulated_wait_minutes": 12,
+        "safe_wait_minutes": 30,
+        "recheck_breached": false
+      },
+      {
+        "patient_id": "P003-surge1",
+        "esi": 4,
+        "confidence": 0.5,
+        "simulated_wait_minutes": 24,
+        "safe_wait_minutes": 60,
+        "recheck_breached": false
+      },
+      {
+        "patient_id": "P004-surge1",
+        "esi": 5,
+        "confidence": 0.85,
+        "simulated_wait_minutes": 36,
+        "safe_wait_minutes": 120,
+        "recheck_breached": false
+      },
+      {
+        "patient_id": "P005-surge1",
+        "esi": 2,
+        "confidence": 1.0,
+        "simulated_wait_minutes": 48,
+        "safe_wait_minutes": 10,
+        "recheck_breached": true
+      },
+      {
+        "patient_id": "P006-surge1",
+        "esi": 5,
+        "confidence": 1.0,
+        "simulated_wait_minutes": 60,
+        "safe_wait_minutes": 120,
+        "recheck_breached": false
+      },
+      {
+        "patient_id": "P007-surge1",
+        "esi": 5,
+        "confidence": 1.0,
+        "simulated_wait_minutes": 72,
+        "safe_wait_minutes": 120,
+        "recheck_breached": false
+      },
+      {
+        "patient_id": "P008-surge1",
+        "esi": 5,
+        "confidence": 0.88,
+        "simulated_wait_minutes": 84,
+        "safe_wait_minutes": 120,
+        "recheck_breached": false
+      },
+      {
+        "patient_id": "P009-surge1",
+        "esi": 1,
+        "confidence": 0.95,
+        "simulated_wait_minutes": 96,
+        "safe_wait_minutes": 0,
+        "recheck_breached": true
+      },
+      {
+        "patient_id": "P010-surge1",
+        "esi": 4,
+        "confidence": 1.0,
+        "simulated_wait_minutes": 108,
+        "safe_wait_minutes": 60,
+        "recheck_breached": true
+      },
+      {
+        "patient_id": "P011-surge1",
+        "esi": 4,
+        "confidence": 0.5,
+        "simulated_wait_minutes": 120,
+        "safe_wait_minutes": 60,
+        "recheck_breached": true
+      },
+      {
+        "patient_id": "P012-surge1",
+        "esi": 4,
+        "confidence": 0.85,
+        "simulated_wait_minutes": 132,
+        "safe_wait_minutes": 60,
+        "recheck_breached": true
+      }
+    ]
+  },
+  "deterioration_recheck": {
+    "patient_id": "P006",
+    "minutes_waited": 100,
+    "before": {
+      "patient_id": "P006",
+      "esi": 5,
+      "confidence": 1.0,
+      "reasons": [
+        "Vitals and complaint ('laceration on forearm') within expected range for adult patient"
+      ],
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "missing_vitals": []
+    },
+    "after": {
+      "patient_id": "P006",
+      "esi": 2,
+      "confidence": 1.0,
+      "reasons": [
+        "Heart rate outside adult normal range",
+        "Respiratory rate outside adult normal range",
+        "Oxygen saturation below expected range",
+        "A single vital is severely abnormal - acuity floored regardless of the overall average"
+      ],
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "missing_vitals": []
+    }
+  },
+  "clinician_override": {
+    "patient_id": "P011",
+    "ai_suggested_esi": 4,
+    "ai_confidence": 0.5,
+    "nurse_final_esi": 3,
+    "nurse_reason": "Patient looks more unwell in person than the vitals alone suggest - pale, diaphoretic on exam. Escalating one level.",
+    "overridden": true
+  },
+  "audit_log": [
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P001",
+      "ai_suggested_esi": 1,
+      "confidence": 0.95,
+      "autonomous_escalation": true,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "RED FLAG: Chest pain with diaphoresis in a patient 40+"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P002",
+      "ai_suggested_esi": 3,
+      "confidence": 0.88,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Fever recorded at 39.4C",
+        "Missing at intake: sbp"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P003",
+      "ai_suggested_esi": 4,
+      "confidence": 0.5,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": true,
+      "reasons": [
+        "Fever (37.9C) - clinically significant for a geriatric patient at a lower threshold than adult norms",
+        "Presentation is vague / hard to characterize from the complaint alone",
+        "Confidence is low (0.5) - defaulting to the more cautious, higher-acuity read rather than assuming average risk"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P004",
+      "ai_suggested_esi": 5,
+      "confidence": 0.85,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('ankle sprain after basketball') within expected range for adult patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P005",
+      "ai_suggested_esi": 2,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Respiratory rate outside adult normal range",
+        "Oxygen saturation below expected range",
+        "A single vital is severely abnormal - acuity floored regardless of the overall average"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P006",
+      "ai_suggested_esi": 5,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('laceration on forearm') within expected range for adult patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P007",
+      "ai_suggested_esi": 5,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('dizziness and fall at home') within expected range for geriatric patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P008",
+      "ai_suggested_esi": 5,
+      "confidence": 0.88,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('cough and mild fever') within expected range for pediatric patient",
+        "Missing at intake: sbp"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P009",
+      "ai_suggested_esi": 1,
+      "confidence": 0.95,
+      "autonomous_escalation": true,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "RED FLAG: Stroke-pattern symptoms reported"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P010",
+      "ai_suggested_esi": 4,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Fever recorded at 38.2C"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P011",
+      "ai_suggested_esi": 4,
+      "confidence": 0.5,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": true,
+      "reasons": [
+        "Presentation is vague / hard to characterize from the complaint alone",
+        "Confidence is low (0.5) - defaulting to the more cautious, higher-acuity read rather than assuming average risk"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P012",
+      "ai_suggested_esi": 4,
+      "confidence": 0.85,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Heart rate outside adult normal range",
+        "Respiratory rate outside adult normal range"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P013",
+      "ai_suggested_esi": 1,
+      "confidence": 0.95,
+      "autonomous_escalation": true,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "RED FLAG: Fever + tachycardia + hypotension: sepsis pattern"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P014",
+      "ai_suggested_esi": 5,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('mild headache') within expected range for adult patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P015",
+      "ai_suggested_esi": 5,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('rash on both arms') within expected range for adult patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P016",
+      "ai_suggested_esi": 5,
+      "confidence": 0.73,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('vomiting and not feeding well') within expected range for pediatric patient",
+        "Missing at intake: sbp"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P017",
+      "ai_suggested_esi": 4,
+      "confidence": 0.14,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": true,
+      "reasons": [
+        "Presentation is vague / hard to characterize from the complaint alone",
+        "Confidence is low (0.14) - defaulting to the more cautious, higher-acuity read rather than assuming average risk",
+        "Missing at intake: sbp, spo2, temp_c"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P018",
+      "ai_suggested_esi": 5,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('cough, three days') within expected range for adult patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P019",
+      "ai_suggested_esi": 3,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Fever recorded at 38.6C"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "intake_score",
+      "patient_id": "P020",
+      "ai_suggested_esi": 5,
+      "confidence": 1.0,
+      "autonomous_escalation": false,
+      "low_confidence_escalated": false,
+      "reasons": [
+        "Vitals and complaint ('ankle sprain during soccer practice') within expected range for adult patient"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "surge_simulation",
+      "multiplier": 3,
+      "total_patients": 60,
+      "recheck_breaches": 30,
+      "note": "Patients whose simulated wait already exceeds their safe-wait threshold under 3x load"
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "waiting_room_recheck",
+      "patient_id": "P006",
+      "minutes_waited": 100,
+      "esi_before": 5,
+      "esi_after": 2,
+      "confidence_after": 1.0,
+      "trigger": "Vitals re-recorded as worsening during a scheduled waiting-room recheck",
+      "reasons_after": [
+        "Heart rate outside adult normal range",
+        "Respiratory rate outside adult normal range",
+        "Oxygen saturation below expected range",
+        "A single vital is severely abnormal - acuity floored regardless of the overall average"
+      ]
+    },
+    {
+      "timestamp": "2026-08-29T12:40:17",
+      "event_type": "clinician_override",
+      "patient_id": "P011",
+      "ai_suggested_esi": 4,
+      "ai_confidence": 0.5,
+      "nurse_final_esi": 3,
+      "nurse_reason": "Patient looks more unwell in person than the vitals alone suggest - pale, diaphoretic on exam. Escalating one level."
+    }
+  ]
+}
