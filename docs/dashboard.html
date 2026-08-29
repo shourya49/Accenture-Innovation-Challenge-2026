@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>TriageCopilot — Round 2 Prototype Dashboard</title>
+<style>
+  :root {
+    --teal-dark: #1E2761;
+    --teal: #028090;
+    --seafoam: #00A896;
+    --mint: #02C39A;
+    --charcoal: #3A3A3A;
+    --gray: #6B6B6B;
+    --light-tint: #E8F6F4;
+    --esi1: #C0392B;
+    --esi2: #E67E22;
+    --esi3: #F1C40F;
+    --esi4: #27AE60;
+    --esi5: #2E86C1;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Calibri, sans-serif;
+    background: #F7FAFA;
+    color: var(--charcoal);
+    margin: 0;
+    padding: 0 0 4rem 0;
+  }
+  header {
+    background: var(--teal-dark);
+    color: white;
+    padding: 2rem 3rem 1.5rem;
+  }
+  header h1 { margin: 0 0 0.3rem; font-size: 1.9rem; }
+  header p { margin: 0; color: #CFEFEA; font-style: italic; }
+  main { max-width: 1150px; margin: 0 auto; padding: 0 2rem; }
+  section {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem 1.8rem;
+    margin-top: 1.8rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  section h2 {
+    color: var(--teal-dark);
+    font-size: 1.25rem;
+    margin-top: 0;
+    border-bottom: 2px solid var(--light-tint);
+    padding-bottom: 0.5rem;
+  }
+  section p.desc { color: var(--gray); margin-top: -0.3rem; font-size: 0.92rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid #EEE; }
+  th { color: var(--gray); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .esi-badge {
+    display: inline-block; min-width: 1.6rem; text-align: center;
+    padding: 0.15rem 0.5rem; border-radius: 20px; color: white; font-weight: 700; font-size: 0.82rem;
+  }
+  .conf-bar-track { background: #EEE; border-radius: 6px; height: 8px; width: 100px; overflow: hidden; display: inline-block; vertical-align: middle;}
+  .conf-bar-fill { height: 100%; background: var(--seafoam); }
+  .conf-label { font-size: 0.78rem; color: var(--gray); margin-left: 0.4rem; }
+  .flag { font-size: 0.72rem; padding: 0.1rem 0.45rem; border-radius: 4px; margin-right: 0.25rem; display: inline-block; }
+  .flag-redflag { background: #FDEDEC; color: var(--esi1); }
+  .flag-lowconf { background: #FEF5E7; color: var(--esi2); }
+  .stat-grid { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .stat-card {
+    flex: 1; min-width: 150px; background: var(--light-tint); border-radius: 8px;
+    padding: 1rem; text-align: center;
+  }
+  .stat-card .num { font-size: 1.8rem; font-weight: 800; color: var(--teal-dark); }
+  .stat-card .label { font-size: 0.78rem; color: var(--gray); margin-top: 0.2rem; }
+  .before-after { display: flex; gap: 1.5rem; align-items: center; margin-top: 0.8rem; flex-wrap: wrap; }
+  .ba-card { flex: 1; min-width: 260px; border-radius: 8px; padding: 1rem 1.2rem; }
+  .ba-before { background: #F4F6F6; }
+  .ba-after { background: #FDEDEC; }
+  .arrow { font-size: 1.8rem; color: var(--gray); }
+  .reason-list { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.85rem; color: var(--charcoal); }
+  .override-card { background: var(--light-tint); border-radius: 8px; padding: 1.2rem; margin-top: 0.6rem; }
+  .audit-log { max-height: 320px; overflow-y: auto; font-size: 0.82rem; }
+  .audit-row { padding: 0.5rem 0; border-bottom: 1px dashed #E2E2E2; }
+  .audit-type {
+    font-weight: 700; color: var(--teal); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.03em;
+  }
+  .muted { color: var(--gray); }
+  .footer-note { text-align: center; color: var(--gray); font-size: 0.8rem; margin-top: 2.5rem; }
+  #load-error { color: var(--esi1); font-weight: 600; padding: 2rem; text-align: center; display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TriageCopilot — Round 2 Prototype</h1>
+  <p>Live view of the scoring engine running against 20 simulated patient records, a 3x surge, a waiting-room deterioration recheck, and a clinician override.</p>
+</header>
+
+<main>
+  <div id="load-error">
+    Could not load simulation_output.json. Run <code>python3 src/simulate.py</code> from the project root, then serve
+    this folder over HTTP (e.g. <code>python3 -m http.server</code>) rather than opening the file directly, since
+    browsers block local file fetches for security reasons.
+  </div>
+
+  <section id="summary-section" style="display:none;">
+    <h2>Summary</h2>
+    <div class="stat-grid" id="summary-stats"></div>
+  </section>
+
+  <section id="queue-section" style="display:none;">
+    <h2>1. Baseline triage queue (20 patients)</h2>
+    <p class="desc">Every score carries a confidence value and a reason — this dashboard never shows a bare number. Sorted by acuity, most urgent first.</p>
+    <table>
+      <thead>
+        <tr><th>Patient</th><th>Age</th><th>Complaint</th><th>ESI</th><th>Confidence</th><th>Flags</th><th>Reasoning</th></tr>
+      </thead>
+      <tbody id="queue-body"></tbody>
+    </table>
+  </section>
+
+  <section id="surge-section" style="display:none;">
+    <h2>2. Simulated 3x surge</h2>
+    <p class="desc">Same patient mix, tripled arrival volume. Shows how many patients would already be past their safe-wait recheck threshold for their acuity level under load a single nurse cannot manually track.</p>
+    <div class="stat-grid" id="surge-stats"></div>
+  </section>
+
+  <section id="deterioration-section" style="display:none;">
+    <h2>3. Waiting-room deterioration recheck</h2>
+    <p class="desc">Patient P006 looked low-acuity at check-in. 100 minutes later, a scheduled recheck finds vitals have quietly worsened — exactly the case TriageCopilot is designed to catch.</p>
+    <div class="before-after" id="deterioration-content"></div>
+  </section>
+
+  <section id="override-section" style="display:none;">
+    <h2>4. Clinician override</h2>
+    <p class="desc">The AI suggests. The nurse decides — every time. Here the nurse's in-person read overrides the AI's suggestion, and both versions are captured.</p>
+    <div class="override-card" id="override-content"></div>
+  </section>
+
+  <section id="audit-section" style="display:none;">
+    <h2>5. Audit log</h2>
+    <p class="desc">Every intake score, override, recheck, and surge event is logged — the accountability trail referenced in the Round 1 pitch.</p>
+    <div class="audit-log" id="audit-content"></div>
+  </section>
+
+  <p class="footer-note">TriageCopilot &middot; PatientTriage.ai &middot; Accenture Innovation Challenge 2026, Round 2 prototype</p>
+</main>
+
+<script>
+const ESI_COLORS = { 1: 'var(--esi1)', 2: 'var(--esi2)', 3: 'var(--esi3)', 4: 'var(--esi4)', 5: 'var(--esi5)' };
+
+function esiBadge(esi) {
+  const bg = { 1: '#C0392B', 2: '#E67E22', 3: '#B7950B', 4: '#27AE60', 5: '#2E86C1' }[esi] || '#999';
+  return `<span class="esi-badge" style="background:${bg}">ESI ${esi}</span>`;
+}
+
+function confBar(conf) {
+  const pct = Math.round(conf * 100);
+  const color = conf < 0.55 ? '#E67E22' : '#00A896';
+  return `<span class="conf-bar-track"><span class="conf-bar-fill" style="width:${pct}%; background:${color}"></span></span><span class="conf-label">${pct}%</span>`;
+}
+
+function renderQueue(baseline) {
+  const rows = [...baseline].sort((a, b) => a.result.esi - b.result.esi);
+  const tbody = document.getElementById('queue-body');
+  tbody.innerHTML = rows.map(row => {
+    const p = row.patient, r = row.result;
+    const flags = [];
+    if (r.autonomous_escalation) flags.push('<span class="flag flag-redflag">RED FLAG</span>');
+    if (r.low_confidence_escalated) flags.push('<span class="flag flag-lowconf">LOW CONF ESCALATED</span>');
+    return `<tr>
+      <td><strong>${p.patient_id}</strong></td>
+      <td>${p.age}</td>
+      <td>${p.chief_complaint}</td>
+      <td>${esiBadge(r.esi)}</td>
+      <td>${confBar(r.confidence)}</td>
+      <td>${flags.join(' ') || '<span class="muted">—</span>'}</td>
+      <td style="font-size:0.78rem; color:var(--gray)">${r.reasons[0] || ''}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSummary(data) {
+  const baseline = data.baseline_results;
+  const redFlags = baseline.filter(r => r.result.autonomous_escalation).length;
+  const lowConf = baseline.filter(r => r.result.low_confidence_escalated).length;
+  const stats = [
+    { num: data.patient_count, label: 'Patients scored' },
+    { num: redFlags, label: 'Autonomous red-flag escalations' },
+    { num: lowConf, label: 'Low-confidence fail-safe escalations' },
+    { num: data.surge_simulation.recheck_breaches, label: 'Recheck breaches under 3x surge' },
+  ];
+  document.getElementById('summary-stats').innerHTML = stats.map(s =>
+    `<div class="stat-card"><div class="num">${s.num}</div><div class="label">${s.label}</div></div>`
+  ).join('');
+}
+
+function renderSurge(surge) {
+  const stats = [
+    { num: surge.total_patients, label: 'Patients under 3x volume' },
+    { num: surge.recheck_breaches, label: 'Already past safe-wait threshold' },
+    { num: `${Math.round(100 * surge.recheck_breaches / surge.total_patients)}%`, label: 'Breach rate at 3x load' },
+  ];
+  document.getElementById('surge-stats').innerHTML = stats.map(s =>
+    `<div class="stat-card"><div class="num">${s.num}</div><div class="label">${s.label}</div></div>`
+  ).join('');
+}
+
+function renderDeterioration(d) {
+  document.getElementById('deterioration-content').innerHTML = `
+    <div class="ba-card ba-before">
+      <div class="muted" style="font-size:0.8rem;">AT CHECK-IN</div>
+      <div style="margin:0.4rem 0;">${esiBadge(d.before.esi)} ${confBar(d.before.confidence)}</div>
+      <ul class="reason-list">${d.before.reasons.map(r => `<li>${r}</li>`).join('')}</ul>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="ba-card ba-after">
+      <div class="muted" style="font-size:0.8rem;">RECHECK AT ${d.minutes_waited} MIN</div>
+      <div style="margin:0.4rem 0;">${esiBadge(d.after.esi)} ${confBar(d.after.confidence)}</div>
+      <ul class="reason-list">${d.after.reasons.map(r => `<li>${r}</li>`).join('')}</ul>
+    </div>`;
+}
+
+function renderOverride(o) {
+  document.getElementById('override-content').innerHTML = `
+    <div style="display:flex; gap:2rem; align-items:center; flex-wrap:wrap;">
+      <div><div class="muted" style="font-size:0.8rem;">AI SUGGESTED</div>${esiBadge(o.ai_suggested_esi)} ${confBar(o.ai_confidence)}</div>
+      <div class="arrow">&rarr;</div>
+      <div><div class="muted" style="font-size:0.8rem;">NURSE FINAL</div>${esiBadge(o.nurse_final_esi)}</div>
+    </div>
+    <p style="margin-top:0.9rem; font-style:italic;">"${o.nurse_reason}"</p>
+    <p class="muted" style="font-size:0.8rem;">Patient ${o.patient_id} &middot; logged as an override, not a correction — the AI's original suggestion is preserved in the audit trail alongside the nurse's final call.</p>`;
+}
+
+function renderAudit(log) {
+  document.getElementById('audit-content').innerHTML = log.map(e => {
+    const details = Object.entries(e).filter(([k]) => !['timestamp', 'event_type'].includes(k))
+      .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join('; ') : v}`).join(' &middot; ');
+    return `<div class="audit-row"><span class="audit-type">${e.event_type.replace(/_/g, ' ')}</span>
+      <span class="muted"> · ${e.timestamp}</span><br><span style="font-size:0.8rem;">${details}</span></div>`;
+  }).join('');
+}
+
+fetch('../output/simulation_output.json')
+  .then(res => { if (!res.ok) throw new Error('not found'); return res.json(); })
+  .then(data => {
+    renderSummary(data);
+    renderQueue(data.baseline_results);
+    renderSurge(data.surge_simulation);
+    renderDeterioration(data.deterioration_recheck);
+    renderOverride(data.clinician_override);
+    renderAudit(data.audit_log);
+    ['summary-section', 'queue-section', 'surge-section', 'deterioration-section', 'override-section', 'audit-section']
+      .forEach(id => document.getElementById(id).style.display = 'block');
+  })
+  .catch(() => { document.getElementById('load-error').style.display = 'block'; });
+</script>
+
+</body>
+</html>
